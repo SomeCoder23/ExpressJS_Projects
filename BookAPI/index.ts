@@ -42,6 +42,11 @@ app.get('/books', (req, res) => {
     
 });
 
+//Health Check
+app.get('/health', (req, res) => {
+    res.status(200).send("Everything good :)");
+});
+
 //Get specific book by id
 app.get('/books/:id', (req, res) => {
     const id = parseInt(req.params.id);
