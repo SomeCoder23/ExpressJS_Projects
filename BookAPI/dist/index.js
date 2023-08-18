@@ -53,6 +53,12 @@ app.get('/books/:id', (req, res) => {
     });
     res.status(404).send("Book not found :(");
 });
+
+//Health Check
+app.get('/health', (req, res) => {
+    res.status(200).send("Everything good :)");
+});
+
 //Get specific book by id
 app.get('/books/:id', (req, res) => {
     const id = parseInt(req.params.id);
