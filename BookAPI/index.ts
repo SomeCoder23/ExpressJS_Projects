@@ -2,7 +2,7 @@ import express from 'express';
 import data from './data/Sample_data.js';
 
 const app = express();
-const port = 3000;
+const port: number = Number(process.env.PORT) || 3000;
 app.use(express.json());
 
 //Get all books (in pages)
@@ -43,9 +43,10 @@ app.get('/books', (req, res) => {
 });
 
 //Health Check
-app.get('/health', (req, res) => {
-    res.status(200).send("Everything good :)");
-});
+app.get("/health", function (req, res) {
+	res.sendStatus(200);
+})
+
 
 //Get specific book by id
 app.get('/books/:id', (req, res) => {
