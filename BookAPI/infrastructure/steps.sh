@@ -26,4 +26,4 @@ sudo systemctl enable app.service
 
 sudo -u app sh -c "mkdir -p /home/app/app && cd /home/app/app && curl -LO $download_url && tar xzvf $asset_name && npm install --omit=dev"
 
-sudo reboot
+sudo systemctl start app.service
