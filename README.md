@@ -1,5 +1,6 @@
-# How to deploy your nodejs project to AWS:
+# Deploying your App to AWS:
 
+## Step 1: Release your app to github
 1) Make sure your nodejs project is working, cd into the folder. Make sure you have a dist folder with the index.js file and an infrastucture folder with an app.service file with the code for running the service on systemd, as shown in the following image:
 
 ![1st step](https://github.com/SomeCoder23/ExpressJS_Projects/blob/main/Screenshots/Screenshot%20from%202023-08-20%2019-16-58.png)
@@ -12,7 +13,8 @@
 
 ![3rd step](https://github.com/SomeCoder23/ExpressJS_Projects/blob/main/Screenshots/Screenshot%20from%202023-08-20%2019-21-49.png)
 
-4) Now go to the aws website login to your account, go to EC2 launch templates and click "Create Launch Template". Fill in the required fields.
+## Step 2: Create a Launch Template
+Go to your aws account, go to EC2 launch templates and click "Create Launch Template". Fill in the required fields.
 
 ![4th step](https://github.com/SomeCoder23/ExpressJS_Projects/blob/main/Screenshots/Screenshot%20from%202023-08-20%2019-23-48.png)
 
@@ -21,7 +23,7 @@ Choose "Quick Start", then "Ubuntu". For the instance type choose "t2.micro".
 ![5th step](https://github.com/SomeCoder23/ExpressJS_Projects/blob/main/Screenshots/Screenshot%20from%202023-08-20%2019-24-46.png)
 
 If you have already created a key pair and you have it downloaded choose it, otherwise create a new one. Once you create it, it will download the private key, move it to a secure folder and change its permisions so only you can read it using the command `chmod 400 yourPrivateKey.pem`.
-And now with the security group, if you have one ready choose it (skip the next part) otherwise create a new one. 
+On to the security group, if you have one ready choose it (skip the next part) otherwise create a new one. 
 
 ![6th step](https://github.com/SomeCoder23/ExpressJS_Projects/blob/main/Screenshots/Screenshot%20from%202023-08-20%2019-25-47.png)
 
@@ -68,17 +70,21 @@ sudo systemctl start app.service
 
 ![7th step](https://github.com/SomeCoder23/ExpressJS_Projects/blob/main/Screenshots/Screenshot%20from%202023-08-20%2019-26-40.png)
 
-Then click "Create launch template". And now we're done with that part :)
+Then click "Create launch template" :)
 
-5) Go to Target Groups and click "Create target group", fill in the following fields. Fill in the health path according to the path you have added in your index.js file for health checking.
+## Step 3: Create a Target Group
+Go to Target Groups and click "Create target group", fill in the following fields. Fill in the health path according to the path you have added in your index.js file for health checking.
 ![8th step](https://github.com/SomeCoder23/ExpressJS_Projects/blob/main/Screenshots/Screenshot%20from%202023-08-20%2019-31-55.png)
 
 ![9th step](https://github.com/SomeCoder23/ExpressJS_Projects/blob/main/Screenshots/Screenshot%20from%202023-08-20%2019-32-17.png)
 
-Click "Create". Now we have create a target group, on to the load balancer :)
+Click "Create". Now we have created a target group, on to the load balancer :)
 
-6) Go to Load Balancers and click "Create Load Balancer", then choose the application load balancer. Set a name and choose the availability zones.
-Either choose an existing security group or create a new one. TO create a new one follow the next steps.
+## Step 4: Create a Load Balancer
+Go to Load Balancers and click "Create Load Balancer", then choose the application load balancer. Set a name and choose the availability zones.
+![step](https://github.com/SomeCoder23/ExpressJS_Projects/blob/main/Screenshots/Screenshot%20from%202023-08-20%2022-24-28.png)
+![step](https://github.com/SomeCoder23/ExpressJS_Projects/blob/main/Screenshots/Screenshot%20from%202023-08-20%2022-24-56.png)
+Either choose an existing security group or create a new one. To create a new one follow the next steps.
 
 ![10th step](https://github.com/SomeCoder23/ExpressJS_Projects/blob/main/Screenshots/Screenshot%20from%202023-08-20%2019-36-58.png)
 
@@ -88,7 +94,8 @@ As we did before open a new tab and go to security groups then click on "Create 
 Click create then go back to your main tab. After you've selected your security group go to the next step and choose the target group you created before. Then click next for the following steps and create the load balancer.
 ![11th step](https://github.com/SomeCoder23/ExpressJS_Projects/blob/main/Screenshots/Screenshot%20from%202023-08-20%2019-37-54.png)
 
-7) Now go to Auto-scaling groups and click create. Enter a name for the group, choose the launch template you created earlier then choose the latest version. Click next.
+## Step 5: Create an Auto-Scaling Group
+Now go to Auto-scaling groups and click create. Enter a name for the group, choose the launch template you created earlier then choose the latest version. Click next.
 ![17th step](https://github.com/SomeCoder23/ExpressJS_Projects/blob/main/Screenshots/Screenshot%20from%202023-08-20%2019-49-23.png)
 
 Choose the availability zones. Click next.
@@ -100,10 +107,11 @@ Choose "Attach to an existing load balancer", then choose your target group. Cli
 Choose your prefered group size, and the min/max capacity.
 ![20th step](https://github.com/SomeCoder23/ExpressJS_Projects/blob/main/Screenshots/Screenshot%20from%202023-08-20%2019-52-42.png)
 
-For the scaling policies either choose none or "Target tracking scaling poilicy", of you chose the latter configure the scaling policy to your preference, in my case I set it to use the Average CPU utilization metric of value 60. Pass through the next steps then click create.
+For the scaling policies either choose none or "Target tracking scaling poilicy", if you chose the latter configure the scaling policy to your preference, in my case I set it to use the Average CPU utilization metric of value 60. Pass through the next steps then click create.
 ![21th step](https://github.com/SomeCoder23/ExpressJS_Projects/blob/main/Screenshots/Screenshot%20from%202023-08-20%2019-53-00.png)
 
-8) After a few minutes, go to your instances and make sure that your new instances are running and healthy, then go to your load balancer and copy it's DNS, then past it into the browser.
+## Step 6: Open your App :)
+After a few minutes, go to your instances and make sure that your new instances are running and healthy, then go to your load balancer and copy it's DNS, then paste it into the browser.
 ![22th step](https://github.com/SomeCoder23/ExpressJS_Projects/blob/main/Screenshots/Screenshot%20from%202023-08-20%2020-05-23.png)
 
 And voilaa there you have it! You successfully deployed your app to aws :)
